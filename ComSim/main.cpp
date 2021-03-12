@@ -3,7 +3,7 @@
 #include <ctime>
 using namespace std;
 
-//CONSULTANT EMPLOYEE INHERITANCE AYARLA
+//CONSULTANT EXCEPTION AYARLA (PRIM)
 
 class Company
 {
@@ -51,6 +51,18 @@ public:
         tecrube = tecrube + x;
         potansiyelBelirle();
         return maas, yas;
+    }
+    int getKatki()
+    {
+        return katki;
+    }
+    void setMaas(int maas)
+    {
+        this->maas = maas;
+    }
+    int getMaas()
+    {
+        return maas;
     }
     void setIsim(string isim)
     {
@@ -119,7 +131,7 @@ public:
             problemCoz(potansiyel);
             hataPayi();
         }
-
+        potansiyel++;
         return problem;
     }
 
@@ -182,6 +194,15 @@ public:
         return birikim;
     }
 
+    void lifeLoop(int x,int y)
+    {
+        yaslanma(x);
+        altLimitBelirle();
+        birikimYap();              
+        problemCoz(y / 2);
+       
+    }
+
 };
 
 class Manager :public Employee
@@ -196,6 +217,14 @@ private:
     float prim = 0;
     int musteriSayi = 0;
 public:
+    void setMaas(int maas)
+    {
+        this->maas = maas;
+    }
+    int getMaas()
+    {
+        return maas;
+    }
     void setIsim(string isim)
     {
         this->isim = isim;
@@ -203,6 +232,14 @@ public:
     string getIsim()
     {
         return isim;
+    }
+    void setYas(int yas)
+    {
+        this->yas = yas;
+    }
+    int getYas()
+    {
+        return yas;
     }
     int getMusteri()
     {
@@ -246,7 +283,7 @@ public:
     }
     float networkPayi()
     {
-        prim += musteriSayi / 1000;
+        prim += musteriSayi / 100;
         return prim;
     }
     int musteriBulma(int y)
@@ -272,53 +309,61 @@ public:
 int main()
 {
     Engineer yigit;
+    Engineer poyraz;
+    Engineer duman;
     Consultant* ptrCons;
+    Engineer* ptrKatkiY;
+    Engineer* ptrKatkiP;
     int classModder = 0;
+    int randomPrim = 0;
+    int musteriHata = 0;
+    int katkiMusteri = 0;
     yigit.setYas(20);
+    duman.setYas(18);
+    poyraz.setYas(22);
+    poyraz.setIsim("Poyraz");
+    duman.setIsim("Duman");
     yigit.setIsim("Yigit");
+    duman.potansiyelBelirle();
+    poyraz.potansiyelBelirle();
+    poyraz.altLimitBelirle();
     yigit.potansiyelBelirle();
     Consultant dilek;
+    dilek.setYas(26);
     dilek.setIsim("dilek");
-    dilek.setPrim(7);
-    dilek.musteriBulma(10);
+    dilek.setPrim(7);    
     ptrCons = &dilek;
-    classModder += ptrCons->getMusteri();
-    yigit.problemCoz(classModder);
-    yigit.bastir();
-    yigit.yaslanma(5);
-    dilek.bastir();
-    dilek.musteriBulma(16);
-    classModder += ptrCons->getMusteri();
-    yigit.potansiyelBelirle();
-    yigit.problemCoz(classModder);
-    yigit.altLimitBelirle();
-    dilek.bastir();
-    yigit.bastir();
+    ptrKatkiY = &yigit;
+    ptrKatkiP = &poyraz;
+    classModder += ptrCons->getMusteri();       
+    
+    
+
+    int stop = 20;
 
 
+    int enFazla = 20, enAz = 5;
 
+    
+    katkiMusteri = ptrKatkiY->getKatki() + ptrKatkiP->getKatki();
 
-    int stop = 10;
-
-
-    int enFazla = 30, enAz = 10;
-
-    srand(time(0));
-
-
-    /* do
+     do
      {
          srand(time(0));
-         int x = rand() % (enFazla - enAz + 1) + enAz;
-         yigit.yaslanma(1);
-         yigit.altLimitBelirle();
-         yigit.problemCoz(x);
-         yigit.birikimYap();
+         katkiMusteri = ptrKatkiY->getKatki() + ptrKatkiP->getKatki();
+         int x = (rand() % (enFazla - enAz + 1) + enAz)-(katkiMusteri/20000);
+         dilek.musteriBulma(x);
+         musteriHata = ptrCons->getMusteri() * 2;
+         yigit.lifeLoop(1, (musteriHata / 2));         
+         poyraz.lifeLoop(1, (musteriHata / 2));
          yigit.bastir();
+         poyraz.bastir();
+         dilek.bastir();
+         cout << endl << endl;
          stop--;
-         Sleep(400);
+         Sleep(700);
      } while (stop);
-     */
+     
 
 }
 
