@@ -3,7 +3,7 @@
 #include <ctime>
 using namespace std;
 
-//CONSULTANT EXCEPTION AYARLA (PRIM)
+//MANAGER EFFICIENY RATE AYARLA
 
 class Company
 {
@@ -30,32 +30,6 @@ public:
     }
 
     virtual int altLimitBelirle() { return maasAlt = 3000; }
-
-
-
-
-
-};
-
-class Engineer :public Employee
-{
-private:
-    int katki = 0;
-    int problem = 0;
-    int potansiyel = 0;
-public:
-    int yaslanma(int x)
-    {
-        yas = yas + x;
-        maas = maas + (x * 200);
-        tecrube = tecrube + x;
-        potansiyelBelirle();
-        return maas, yas;
-    }
-    int getKatki()
-    {
-        return katki;
-    }
     void setMaas(int maas)
     {
         this->maas = maas;
@@ -87,6 +61,32 @@ public:
     {
         return yas;
     }
+
+
+
+
+};
+
+class Engineer :public Employee
+{
+private:
+    int katki = 0;
+    int problem = 0;
+    int potansiyel = 0;
+public:
+    int yaslanma(int x)
+    {
+        yas = yas + x;
+        maas = maas + (x * 200);
+        tecrube = tecrube + x;
+        potansiyelBelirle();
+        return maas, yas;
+    }
+    int getKatki()
+    {
+        return katki;
+    }
+  
 
     void setProblem(int problem)
     {
@@ -131,13 +131,15 @@ public:
             problemCoz(potansiyel);
             hataPayi();
         }
-        potansiyel++;
+        
+        potansiyel++;         
+        
         return problem;
     }
 
     int problemHata(int y)
     {
-        problem = problem - y;
+        problem -=y;
         if (y > 10)
         {
 
@@ -202,11 +204,25 @@ public:
         problemCoz(y / 2);
        
     }
+     
+    
 
 };
 
 class Manager :public Employee
 {
+private:
+    float efficiency;
+    int maxCalisan;
+    int optimumValue;
+
+public:
+    int efficiencyEffect(int toplamSatis)
+    {
+        toplamSatis += toplamSatis * efficiency;
+        return toplamSatis;
+    }
+
 
 };
 
@@ -216,31 +232,7 @@ private:
     int satisMiktari = 0;
     float prim = 0;
     int musteriSayi = 0;
-public:
-    void setMaas(int maas)
-    {
-        this->maas = maas;
-    }
-    int getMaas()
-    {
-        return maas;
-    }
-    void setIsim(string isim)
-    {
-        this->isim = isim;
-    }
-    string getIsim()
-    {
-        return isim;
-    }
-    void setYas(int yas)
-    {
-        this->yas = yas;
-    }
-    int getYas()
-    {
-        return yas;
-    }
+public:    
     int getMusteri()
     {
         return musteriSayi;
@@ -268,6 +260,16 @@ public:
 
         satisMiktari += y;
         primPayi(y);
+        try
+        {
+            if (prim > 15)
+                throw prim;
+        }
+        catch(float maxPrim)
+        {
+            prim = 15;
+        }
+        
         return satisMiktari;
 
     }
@@ -303,9 +305,7 @@ public:
 
 };
 
-//Yigit KATKI :47570 PROBLEM :71 MAAS :20703 YAS :24 maas alt : 9000 Potansiyel  : 22
-//Yigit KATKI :42210 PROBLEM :63 MAAS :19765 YAS :34 maas alt : 11000 Potansiyel  : 34
-//Yigit KATKI : 69680 PROBLEM : 104 MAAS : 33835 YAS : 34 maas alt : 11000 Potansiyel : 34
+
 int main()
 {
     Engineer yigit;
@@ -342,7 +342,7 @@ int main()
     int stop = 20;
 
 
-    int enFazla = 20, enAz = 5;
+    int enFazla = 30, enAz = 5;
 
     
     katkiMusteri = ptrKatkiY->getKatki() + ptrKatkiP->getKatki();
@@ -356,6 +356,7 @@ int main()
          musteriHata = ptrCons->getMusteri() * 2;
          yigit.lifeLoop(1, (musteriHata / 2));         
          poyraz.lifeLoop(1, (musteriHata / 2));
+
          yigit.bastir();
          poyraz.bastir();
          dilek.bastir();
